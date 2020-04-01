@@ -1,0 +1,22 @@
+
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Requests.g.dart';
+
+
+// GEN COMMAND: flutter packages pub run build_runner build
+
+@JsonSerializable()
+class AuthRequest {
+
+  @JsonKey(name: "wallet")
+  String wallet;
+  @JsonKey(name: "password")
+  String password;
+
+  AuthRequest(this.wallet, this.password);
+
+  factory AuthRequest.fromJson(Map<String, dynamic> json) => _$AuthRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$AuthRequestToJson(this);
+
+}
