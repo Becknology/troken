@@ -30,7 +30,6 @@ class TokenApi {
       print("TOken = NULL");
     } else {
       print("TOken = " + token);
-
     }
     _userToken = token;
   }
@@ -45,11 +44,23 @@ class TokenApi {
     return r;
   }
 
+  Future<AccountsResponse> accounts(AuthRequest authRequest) {
+    var r = _getObject("/accounts", (json) => AccountsResponse.fromJson(json));
+    print(r.toString());
+    return r;
+  }
+
   Future<Response> _get(String url) async {
     if (_userToken == null) {
       _headers.putIfAbsent("bearer", () => _userToken);
     }
     return await _httpClient.get("$_baseUrl$url", headers: _headers);
+  }
+
+  Future<T> _getObject<T>(String url, T Function(dynamic) converter) async {
+    var response = await _get(url);
+    var json = convert.jsonDecode(response.body);
+    return converter(json);
   }
 
   Future<Response> _post(String url, dynamic body) async {

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:troken/TokenModel.dart';
 import 'package:troken/network/TokenApi.dart';
 
-import 'homepage/HomePage.dart';
+import 'LoginPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           accentColor: Color(0xFFAED581),
           buttonColor: Color(0xFFAED581),
         ),
-        home: HomePage(),
+        home: LoginPage(),
       ),
     );
   }

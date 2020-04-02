@@ -21,6 +21,51 @@ class AuthResponse {
 
 }
 
+
+@JsonSerializable()
+class AccountsResponse {
+
+  @JsonKey(name: "accounts")
+  List<AccountResponse> accounts;
+  @JsonKey(name: "errors")
+  List<ErrorResponse> errors;
+
+  AccountsResponse(this.accounts, this.errors);
+
+  factory AccountsResponse.fromJson(Map<String, dynamic> json) => _$AccountsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$AccountsResponseToJson(this);
+
+}
+
+
+@JsonSerializable()
+class AccountResponse {
+
+  // p or o
+  @JsonKey(name: "type", required: true)
+  String type;
+  @JsonKey(name: "wallet", required: true)
+  String wallet;
+  @JsonKey(name: "email")
+  String email;
+  @JsonKey(name: "phone")
+  String phone;
+  @JsonKey(name: "first_name")
+  String firstName;
+  @JsonKey(name: "last_name")
+  String lastName;
+  @JsonKey(name: "access", required: true)
+  String access;
+  @JsonKey(name: "tokens_in_wallet", required: true)
+  String tokenAmount;
+
+  AccountResponse(this.type, this.wallet, this.email, this.phone, this.firstName, this.lastName, this.access, this.tokenAmount);
+
+  factory AccountResponse.fromJson(Map<String, dynamic> json) => _$AccountResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$AccountResponseToJson(this);
+
+}
+
 @JsonSerializable()
 class ErrorResponse {
 
