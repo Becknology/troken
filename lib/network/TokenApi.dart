@@ -1,4 +1,5 @@
 import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http_logger/log_level.dart';
 import 'package:http_logger/logging_middleware.dart';
@@ -16,29 +17,45 @@ class TokenApi {
 
   static const String API_KEY = "Bkmog4evxYxaEt6l9Odx1bWuZznMDhOX";
 
-  static const Map<String, String> _headers = {
+  String _userToken;
+
+  static Map<String, String> _headers = {
     "Content-Type" : "application/json",
     "TREETRACKER-API-KEY" : API_KEY,
   };
+
+
+  void setUserToken(String token) {
+    if (token == null) {
+      print("TOken = NULL");
+    } else {
+      print("TOken = " + token);
+
+    }
+    _userToken = token;
+  }
 
   HttpWithMiddleware _httpClient = HttpWithMiddleware.build(middlewares: [
     HttpLogger(logLevel: LogLevel.BODY),
   ]);
 
   Future<AuthResponse> authenticate(AuthRequest authRequest) {
-    return _postObject("/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
-  }
-
-  Future<String> google() async {
-    var r =  await _httpClient.get("https://google.com");
-    return r.toString();
+    var r = _postObject("/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
+    print(r.toString());
+    return r;
   }
 
   Future<Response> _get(String url) async {
+    if (_userToken == null) {
+      _headers.putIfAbsent("bearer", () => _userToken);
+    }
     return await _httpClient.get("$_baseUrl$url", headers: _headers);
   }
 
   Future<Response> _post(String url, dynamic body) async {
+    if (_userToken == null) {
+      _headers.putIfAbsent("bearer", () => _userToken);
+    }
     return await _httpClient.post("$_baseUrl$url", headers: _headers, body: body);
   }
 

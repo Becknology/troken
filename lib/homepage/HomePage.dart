@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:troken/TokenModel.dart';
 import 'package:troken/network/Requests.dart';
 import 'package:troken/network/TokenApi.dart';
 
@@ -13,17 +15,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  String token = "No Token";
-
-  final _walletTextController = TextEditingController();
+  final _usernameTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
 
   final FocusNode _buttonFocus = new FocusNode();
   final FocusNode _passwordFocus = new FocusNode();
 
+  final snackBar = SnackBar(content: Text("Something went wrong. Please try again."));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Troken"),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -31,9 +36,9 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextField(
-                controller: _walletTextController,
+                controller: _usernameTextController,
                 decoration: InputDecoration(
-                  hintText: "Wallet Name",
+                  hintText: "Username",
                   border: OutlineInputBorder()
                 ),
                 textInputAction: TextInputAction.next,
@@ -52,8 +57,7 @@ class _HomePageState extends State<HomePage> {
                 textInputAction: TextInputAction.done,
                 onSubmitted: (s) async {
                   _buttonFocus.requestFocus();
-                  var request = AuthRequest(_walletTextController.text, _passwordTextController.text);
-                  var response = await TokenApi().authenticate(request);
+
                 },
               ),
               SizedBox(height: 12,),
@@ -61,8 +65,14 @@ class _HomePageState extends State<HomePage> {
                 focusNode: _buttonFocus,
                 child: Text("Login"),
                 onPressed: () async {
-                  var request = AuthRequest(_walletTextController.text, _passwordTextController.text);
-                  var response = await TokenApi().authenticate(request);
+                  var isSuccess = await Provider.of<TokenModel>(context)
+                      .login(_passwordTextController.text, _passwordTextController.text);
+                  if (isSuccess) {
+                    print("Good");
+                  } else {
+                    print("Bad");
+//                    Scaffold.of(context).showSnackBar(snackBar);
+                  }
                 },
               ),
             ],
@@ -70,6 +80,15 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _passwordTextController.dispose();
+    _usernameTextController.dispose();
+    _passwordFocus.dispose();
+    _buttonFocus.dispose();
+    super.dispose();
   }
 
 }
