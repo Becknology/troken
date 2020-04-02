@@ -55,7 +55,7 @@ AccountResponse _$AccountResponseFromJson(Map<String, dynamic> json) {
     json['first_name'] as String,
     json['last_name'] as String,
     json['access'] as String,
-    json['tokens_in_wallet'] as String,
+    json['tokens_in_wallet'] as int,
   );
 }
 

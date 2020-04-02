@@ -57,7 +57,7 @@ class AccountResponse {
   @JsonKey(name: "access", required: true)
   String access;
   @JsonKey(name: "tokens_in_wallet", required: true)
-  String tokenAmount;
+  int tokenAmount;
 
   AccountResponse(this.type, this.wallet, this.email, this.phone, this.firstName, this.lastName, this.access, this.tokenAmount);
 

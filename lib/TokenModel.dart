@@ -1,6 +1,7 @@
 
 
 import 'package:troken/network/Requests.dart';
+import 'package:troken/network/Responses.dart';
 import 'package:troken/network/TokenApi.dart';
 
 class TokenModel {
@@ -27,5 +28,8 @@ class TokenModel {
     });
   }
 
+  Future<AccountResponse> loadAccount() {
+    return _api.accounts().then((value) => value.accounts[0]);
+  }
 
 }

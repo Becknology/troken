@@ -29,9 +29,9 @@ class TokenApi {
     if (token == null) {
       print("TOken = NULL");
     } else {
+      _userToken = token;
       print("TOken = " + token);
     }
-    _userToken = token;
   }
 
   HttpWithMiddleware _httpClient = HttpWithMiddleware.build(middlewares: [
@@ -39,20 +39,16 @@ class TokenApi {
   ]);
 
   Future<AuthResponse> authenticate(AuthRequest authRequest) {
-    var r = _postObject("/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
-    print(r.toString());
-    return r;
+    return _postObject("/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
   }
 
-  Future<AccountsResponse> accounts(AuthRequest authRequest) {
-    var r = _getObject("/accounts", (json) => AccountsResponse.fromJson(json));
-    print(r.toString());
-    return r;
+  Future<AccountsResponse> accounts() {
+    return _getObject("/accounts", (json) => AccountsResponse.fromJson(json));
   }
 
   Future<Response> _get(String url) async {
-    if (_userToken == null) {
-      _headers.putIfAbsent("bearer", () => _userToken);
+    if (_userToken != null) {
+      _headers.putIfAbsent("Authorization", () => "Bearer $_userToken");
     }
     return await _httpClient.get("$_baseUrl$url", headers: _headers);
   }
@@ -64,8 +60,8 @@ class TokenApi {
   }
 
   Future<Response> _post(String url, dynamic body) async {
-    if (_userToken == null) {
-      _headers.putIfAbsent("bearer", () => _userToken);
+    if (_userToken != null) {
+      _headers.putIfAbsent("Authorization", () => "Bearer $_userToken");
     }
     return await _httpClient.post("$_baseUrl$url", headers: _headers, body: body);
   }
