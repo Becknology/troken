@@ -7,6 +7,8 @@ import 'LoginPage.dart';
 
 void main() => runApp(MyApp());
 
+const mainColor = Color(0xFFAED581);
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -16,9 +18,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Troken',
         theme: ThemeData(
-          primaryColor: Color(0xFFAED581),
-          accentColor: Color(0xFFAED581),
-          buttonColor: Color(0xFFAED581),
+          primaryColor: mainColor,
+          accentColor: mainColor,
+          buttonColor: mainColor,
         ),
         home: LoginPage(),
       ),

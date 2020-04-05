@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:troken/TokenModel.dart';
+import 'package:troken/main.dart';
 import 'package:troken/network/Requests.dart';
 import 'package:troken/network/TokenApi.dart';
 
@@ -25,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final snackBar = SnackBar(content: Text("Something went wrong. Please try again."));
 
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextField(
+                cursorColor: mainColor,
                 controller: _usernameTextController,
                 decoration: InputDecoration(
                   hintText: "Username",
@@ -50,16 +54,26 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 12,),
               TextField(
+                cursorColor: mainColor,
                 focusNode: _passwordFocus,
                 controller: _passwordTextController,
                 decoration: InputDecoration(
+                  suffixIcon: GestureDetector(
+                    child: Icon(_obscureText ? Icons.lock_outline : Icons.lock_open),
+                    onTap: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
                   hintText: "Password",
                   border: OutlineInputBorder()
                 ),
+                obscureText: _obscureText,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (s) async {
                   _buttonFocus.requestFocus();
-
+                  onLogin();
                 },
               ),
               SizedBox(height: 12,),
@@ -67,16 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                 focusNode: _buttonFocus,
                 child: Text("Login"),
                 onPressed: () async {
-                  var isSuccess = await Provider.of<TokenModel>(context)
-                      .login(_usernameTextController.text, _passwordTextController.text);
-                  if (isSuccess) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
-                  } else {
-                    print("Bad");
-                  }
+                  onLogin();
                 },
               ),
             ],
@@ -84,6 +89,19 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void onLogin() async {
+    var isSuccess = await Provider.of<TokenModel>(context)
+        .login(_usernameTextController.text, _passwordTextController.text);
+    if (isSuccess) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      print("Bad");
+    }
   }
 
   @override
