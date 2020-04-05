@@ -17,8 +17,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  final _usernameTextController = TextEditingController(text: "ZavenDemo");
-  final _passwordTextController = TextEditingController(text: "MyGreat38473");
+  final _usernameTextController = TextEditingController(text: "JonathanMuller");
+  final _passwordTextController = TextEditingController(text: "Muller2020");
 
   final FocusNode _buttonFocus = new FocusNode();
   final FocusNode _passwordFocus = new FocusNode();

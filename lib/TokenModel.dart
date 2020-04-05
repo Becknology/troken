@@ -10,6 +10,8 @@ class TokenModel {
 
   TokenModel(this._api);
 
+  AccountResponse _currentAccountResponse;
+
   Future<bool> login(String username, String password) {
     return _api.authenticate(AuthRequest(username, password))
         .catchError((e) => false)
@@ -29,7 +31,17 @@ class TokenModel {
   }
 
   Future<AccountResponse> loadAccount() {
-    return _api.accounts().then((value) => value.accounts[0]);
+    if (_currentAccountResponse != null) {
+      return Future.value(_currentAccountResponse);
+    }
+    return _api.accounts()
+        .then((value) => value.accounts[0])
+        .then((value) {
+          _currentAccountResponse = value;
+          return _currentAccountResponse;
+        });
   }
+
+
 
 }

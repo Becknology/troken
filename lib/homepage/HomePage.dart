@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:troken/TokenModel.dart';
 import 'package:troken/network/Responses.dart';
 
+import '../AccountPage.dart';
+
 class HomePage extends StatefulWidget {
 
   @override
@@ -11,42 +13,45 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+//  List<Key> _pageKeys = [
+//    GlobalKey(),
+//    GlobalKey(),
+//  ];
+
+  KeyedSubtree a = null;
+
+  int _currentIndex = 0;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Troken"),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: <Widget>[
+          AccountPage(),
+          Placeholder()
+        ],
       ),
-      body: FutureBuilder<AccountResponse>(
-        future: Provider.of<TokenModel>(context).loadAccount(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return loadedState(context, snapshot.data);
-          } else {
-            return loadingState(context);
-          }
-        }
-      )
-    );
-  }
-
-  Widget loadedState(BuildContext context, AccountResponse response) {
-    return Column(
-      children: <Widget>[
-        Text("Type: ${response.access == 'p' ? "Personal" : "Organization" }"),
-        Text("Name: ${response.firstName} ${response.lastName}"),
-        Text("Wallet: ${response.wallet}"),
-        Text("Email: ${response.email}"),
-        Text("Phone: ${response.phone}"),
-        Text("Access: ${response.access}"),
-        Text("Total Tokens: ${response.tokenAmount}"),
-      ],
-    );
-  }
-
-  Widget loadingState(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            title: Text("Account"),
+            icon: Icon(Icons.account_balance_wallet)
+          ),
+          BottomNavigationBarItem(
+              title: Text("Send"),
+              icon: Icon(Icons.monetization_on)
+          )
+        ]
+      ),
     );
   }
 

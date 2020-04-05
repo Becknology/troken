@@ -16,6 +16,7 @@ class TokenApi {
   static const String _testBaseUrl = "https://test.treetracker.org/api/token";
 
   static const String API_KEY = "Bkmog4evxYxaEt6l9Odx1bWuZznMDhOX";
+//  static const String API_KEY = "0YUF85Z0kZOBhI9eVOsMteLb0YxVA2nt";
 
   String _userToken;
 
@@ -26,12 +27,7 @@ class TokenApi {
 
 
   void setUserToken(String token) {
-    if (token == null) {
-      print("TOken = NULL");
-    } else {
-      _userToken = token;
-      print("TOken = " + token);
-    }
+    _userToken = token;
   }
 
   HttpWithMiddleware _httpClient = HttpWithMiddleware.build(middlewares: [
@@ -43,7 +39,11 @@ class TokenApi {
   }
 
   Future<AccountsResponse> accounts() {
-    return _getObject("/accounts", (json) => AccountsResponse.fromJson(json));
+    return _getObject("/account", (json) => AccountsResponse.fromJson(json));
+  }
+
+  Future<AccountsResponse> trees(String wallet) {
+    return _getObject("/tree?limit=50&wallet=$wallet", (json) => AccountsResponse.fromJson(json));
   }
 
   Future<Response> _get(String url) async {
