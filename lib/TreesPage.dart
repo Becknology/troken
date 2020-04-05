@@ -1,7 +1,11 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:troken/LCEFutureBuilder.dart';
+import 'package:troken/TokenModel.dart';
+import 'package:troken/TreeItem.dart';
+import 'package:troken/network/Responses.dart';
 
 class TreesPage extends StatefulWidget {
 
@@ -18,9 +22,20 @@ class _TreesPageState extends State<TreesPage> {
       appBar: AppBar(
         title: Text("Your Trees"),
       ),
-      body: LCEFutureBuilder(
+      body: LCEFutureBuilder<TreeListResponse>(
+        future: Provider.of<TokenModel>(context).loadTrees(),
         builder: (context, snapshot) {
-
+          var trees = snapshot.data.trees;
+          return ListView.builder(
+            itemCount: trees.length,
+            itemBuilder: (context, index) {
+              return TreeItem(
+                title: trees[index].region,
+                subtitle: trees[index].treeCaptureTime,
+                imageUrl: trees[index].imageUrl,
+              );
+            }
+          );
         }
       ),
     );

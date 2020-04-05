@@ -67,6 +67,49 @@ class AccountResponse {
 }
 
 @JsonSerializable()
+class TreeListResponse {
+
+  @JsonKey(name: "trees")
+  List<TreeResponse> trees;
+  @JsonKey(name: "wallet")
+  String wallet;
+  @JsonKey(name: "wallet_url")
+  String walletUrl;
+
+  TreeListResponse(this.trees, this.wallet, this.walletUrl);
+
+  factory TreeListResponse.fromJson(Map<String, dynamic> json) => _$TreeListResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$TreeListResponseToJson(this);
+
+}
+
+@JsonSerializable()
+class TreeResponse {
+
+  @JsonKey(name: "token")
+  String token;
+  @JsonKey(name: "map_url")
+  String mapUrl;
+  @JsonKey(name: "image_url")
+  String imageUrl;
+  @JsonKey(name: "tree_captured_at")
+  String treeCaptureTime;
+  @JsonKey(name: "latitude")
+  String latitude;
+  @JsonKey(name: "longitude")
+  String longitude;
+  @JsonKey(name: "region")
+  String region;
+
+  TreeResponse(this.token, this.mapUrl, this.imageUrl, this.treeCaptureTime, this.latitude, this.longitude, this.region);
+
+  factory TreeResponse.fromJson(Map<String, dynamic> json) => _$TreeResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$TreeResponseToJson(this);
+
+}
+
+
+@JsonSerializable()
 class ErrorResponse {
 
   @JsonKey(name: "value")

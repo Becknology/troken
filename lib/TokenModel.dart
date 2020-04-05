@@ -1,5 +1,3 @@
-
-
 import 'package:troken/network/Requests.dart';
 import 'package:troken/network/Responses.dart';
 import 'package:troken/network/TokenApi.dart';
@@ -11,6 +9,7 @@ class TokenModel {
   TokenModel(this._api);
 
   AccountResponse _currentAccountResponse;
+  TreeListResponse _currentTreeListResponse;
 
   Future<bool> login(String username, String password) {
     return _api.authenticate(AuthRequest(username, password))
@@ -42,6 +41,16 @@ class TokenModel {
         });
   }
 
+  Future<TreeListResponse> loadTrees() {
+    if (_currentTreeListResponse != null) {
+      return Future.value(_currentTreeListResponse);
+    }
 
+    return _api.trees(_currentAccountResponse.wallet)
+        .then((value) {
+      _currentTreeListResponse = value;
+      return _currentTreeListResponse;
+    });
+  }
 
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:troken/TokenModel.dart';
+import 'package:troken/TreesPage.dart';
 import 'package:troken/network/Responses.dart';
 
 import '../AccountPage.dart';
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         index: _currentIndex,
         children: <Widget>[
           AccountPage(),
-          Placeholder()
+          TreesPage()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

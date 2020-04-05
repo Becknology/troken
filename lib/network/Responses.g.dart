@@ -71,6 +71,47 @@ Map<String, dynamic> _$AccountResponseToJson(AccountResponse instance) =>
       'tokens_in_wallet': instance.tokenAmount,
     };
 
+TreeListResponse _$TreeListResponseFromJson(Map<String, dynamic> json) {
+  return TreeListResponse(
+    (json['trees'] as List)
+        ?.map((e) =>
+            e == null ? null : TreeResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    json['wallet'] as String,
+    json['wallet_url'] as String,
+  );
+}
+
+Map<String, dynamic> _$TreeListResponseToJson(TreeListResponse instance) =>
+    <String, dynamic>{
+      'trees': instance.trees,
+      'wallet': instance.wallet,
+      'wallet_url': instance.walletUrl,
+    };
+
+TreeResponse _$TreeResponseFromJson(Map<String, dynamic> json) {
+  return TreeResponse(
+    json['token'] as String,
+    json['map_url'] as String,
+    json['image_url'] as String,
+    json['tree_captured_at'] as String,
+    json['latitude'] as String,
+    json['longitude'] as String,
+    json['region'] as String,
+  );
+}
+
+Map<String, dynamic> _$TreeResponseToJson(TreeResponse instance) =>
+    <String, dynamic>{
+      'token': instance.token,
+      'map_url': instance.mapUrl,
+      'image_url': instance.imageUrl,
+      'tree_captured_at': instance.treeCaptureTime,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'region': instance.region,
+    };
+
 ErrorResponse _$ErrorResponseFromJson(Map<String, dynamic> json) {
   return ErrorResponse(
     json['value'] as String,

@@ -42,8 +42,8 @@ class TokenApi {
     return _getObject("/account", (json) => AccountsResponse.fromJson(json));
   }
 
-  Future<AccountsResponse> trees(String wallet) {
-    return _getObject("/tree?limit=50&wallet=$wallet", (json) => AccountsResponse.fromJson(json));
+  Future<TreeListResponse> trees(String wallet) {
+    return _getObject("/tree?limit=50&wallet=$wallet", (json) => TreeListResponse.fromJson(json));
   }
 
   Future<Response> _get(String url) async {
