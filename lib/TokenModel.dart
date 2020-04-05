@@ -53,4 +53,8 @@ class TokenModel {
     });
   }
 
+  Future<List<TreeHistoryLogResponse>> loadHistory(String treeToken) {
+     return _api.history(treeToken).then((historyResponse) => historyResponse.logs);
+  }
+
 }

@@ -108,6 +108,37 @@ class TreeResponse {
 
 }
 
+@JsonSerializable()
+class TreeHistoryResponse {
+
+  @JsonKey(name: "history")
+  List<TreeHistoryLogResponse> logs;
+
+  TreeHistoryResponse(this.logs);
+
+  factory TreeHistoryResponse.fromJson(Map<String, dynamic> json) => _$TreeHistoryResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$TreeHistoryResponseToJson(this);
+
+}
+
+@JsonSerializable()
+class TreeHistoryLogResponse {
+
+  @JsonKey(name: "token")
+  String token;
+  @JsonKey(name: "sender_wallet")
+  String senderWallet;
+  @JsonKey(name: "receiver_wallet")
+  String receiverWallet;
+  @JsonKey(name: "processed_at")
+  String processedAt;
+
+  TreeHistoryLogResponse(this.token, this.senderWallet, this.receiverWallet, this.processedAt);
+
+  factory TreeHistoryLogResponse.fromJson(Map<String, dynamic> json) => _$TreeHistoryLogResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$TreeHistoryLogResponseToJson(this);
+
+}
 
 @JsonSerializable()
 class ErrorResponse {

@@ -15,15 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-//  List<Key> _pageKeys = [
-//    GlobalKey(),
-//    GlobalKey(),
-//  ];
-
-  KeyedSubtree a = null;
-
   int _currentIndex = 0;
-
 
   @override
   Widget build(BuildContext context) {

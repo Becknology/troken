@@ -112,6 +112,41 @@ Map<String, dynamic> _$TreeResponseToJson(TreeResponse instance) =>
       'region': instance.region,
     };
 
+TreeHistoryResponse _$TreeHistoryResponseFromJson(Map<String, dynamic> json) {
+  return TreeHistoryResponse(
+    (json['history'] as List)
+        ?.map((e) => e == null
+            ? null
+            : TreeHistoryLogResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$TreeHistoryResponseToJson(
+        TreeHistoryResponse instance) =>
+    <String, dynamic>{
+      'history': instance.logs,
+    };
+
+TreeHistoryLogResponse _$TreeHistoryLogResponseFromJson(
+    Map<String, dynamic> json) {
+  return TreeHistoryLogResponse(
+    json['token'] as String,
+    json['sender_wallet'] as String,
+    json['receiver_wallet'] as String,
+    json['processed_at'] as String,
+  );
+}
+
+Map<String, dynamic> _$TreeHistoryLogResponseToJson(
+        TreeHistoryLogResponse instance) =>
+    <String, dynamic>{
+      'token': instance.token,
+      'sender_wallet': instance.senderWallet,
+      'receiver_wallet': instance.receiverWallet,
+      'processed_at': instance.processedAt,
+    };
+
 ErrorResponse _$ErrorResponseFromJson(Map<String, dynamic> json) {
   return ErrorResponse(
     json['value'] as String,

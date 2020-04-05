@@ -46,6 +46,10 @@ class TokenApi {
     return _getObject("/tree?limit=50&wallet=$wallet", (json) => TreeListResponse.fromJson(json));
   }
 
+  Future<TreeHistoryResponse> history(String treeToken) {
+    return _getObject("/history?token=$treeToken", (json) => TreeHistoryResponse.fromJson(json));
+  }
+
   Future<Response> _get(String url) async {
     if (_userToken != null) {
       _headers.putIfAbsent("Authorization", () => "Bearer $_userToken");
