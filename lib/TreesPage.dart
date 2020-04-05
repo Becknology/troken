@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:troken/HistoryPage.dart';
@@ -44,6 +42,12 @@ class _TreesPageState extends State<TreesPage> {
             }
           );
         }
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.send),
+        onPressed: () {
+
+        },
       ),
     );
   }

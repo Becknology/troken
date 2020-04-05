@@ -15,6 +15,26 @@ class TreeItem extends StatelessWidget {
       leading: Image.network(imageUrl),
       title: Text(title),
       subtitle: Text(subtitle),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.history),
+            ),
+            onTap: () {},
+          ),
+          GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.info_outline),
+            ),
+            onTap: () {},
+          )
+        ],
+      ),
       onTap: onTap,
     );
   }
