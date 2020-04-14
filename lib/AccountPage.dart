@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:troken/AccountItem.dart';
+import 'package:troken/TreesPage.dart';
 
 import 'LCEFutureBuilder.dart';
 import 'TokenModel.dart';
@@ -40,6 +41,11 @@ class _AccountPageState extends State<AccountPage> {
           account: accounts[i],
           onTap: (account) {
             print(account.wallet);
+            Provider.of<TokenModel>(context).setSelectedAccount(account);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TreesPage()),
+            );
           },
         );
       }

@@ -10,7 +10,15 @@ class TokenModel {
 
   List<AccountResponse> _accounts;
   AccountResponse _currentAccount;
-  TreeListResponse _currentTreeListResponse;
+  Map<String, TreeListResponse> _currentTreeListResponseMap = new Map();
+
+  AccountResponse getSelectedAccount() {
+    return _currentAccount;
+  }
+
+  void setSelectedAccount(AccountResponse account) {
+    _currentAccount = account;
+  }
 
   Future<bool> login(String username, String password) {
     return _api.authenticate(AuthRequest(username, password))
@@ -44,14 +52,14 @@ class TokenModel {
   }
 
   Future<TreeListResponse> loadTrees() {
-    if (_currentTreeListResponse != null) {
-      return Future.value(_currentTreeListResponse);
+    if (_currentTreeListResponseMap.containsKey(_currentAccount.wallet)) {
+      return Future.value(_currentTreeListResponseMap[_currentAccount.wallet]);
     }
 
     return _api.trees(_currentAccount.wallet)
         .then((value) {
-      _currentTreeListResponse = value;
-      return _currentTreeListResponse;
+      _currentTreeListResponseMap.putIfAbsent(_currentAccount.wallet, () => value);
+      return _currentTreeListResponseMap[_currentAccount.wallet];
     });
   }
 
