@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:troken/AccountItem.dart';
 
 import 'LCEFutureBuilder.dart';
 import 'TokenModel.dart';
@@ -22,8 +23,8 @@ class _AccountPageState extends State<AccountPage> {
       appBar: AppBar(
         title: Text("Account"),
       ),
-      body: LCEFutureBuilder<AccountResponse>(
-          future: Provider.of<TokenModel>(context).loadAccount(),
+      body: LCEFutureBuilder<List<AccountResponse>>(
+          future: Provider.of<TokenModel>(context).loadAccounts(),
           builder: (context, snapshot) {
             return loadedState(context, snapshot.data);
           }
@@ -31,17 +32,17 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget loadedState(BuildContext context, AccountResponse response) {
-    return Column(
-      children: <Widget>[
-        Text("Type: ${response.access == "p" ? "Personal" : "Organization" }"),
-        Text("Name: ${response.firstName} ${response.lastName}"),
-        Text("Wallet: ${response.wallet}"),
-        Text("Email: ${response.email}"),
-        Text("Phone: ${response.phone}"),
-        Text("Access: ${response.access}"),
-        Text("Total Tokens: ${response.tokenAmount}"),
-      ],
+  Widget loadedState(BuildContext context, List<AccountResponse> accounts) {
+    return ListView.builder(
+      itemCount: accounts.length,
+      itemBuilder: (context, i) {
+        return AccountItem(
+          account: accounts[i],
+          onTap: (account) {
+            print(account.wallet);
+          },
+        );
+      }
     );
   }
 

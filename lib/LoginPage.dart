@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:troken/AccountPage.dart';
 import 'package:troken/TokenModel.dart';
 import 'package:troken/main.dart';
 import 'package:troken/network/Requests.dart';
@@ -97,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
     if (isSuccess) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => AccountPage()),
       );
     } else {
       print("Bad");

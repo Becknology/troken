@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
         index: _currentIndex,
         children: <Widget>[
           AccountPage(),
-          TreesPage()
+          //TreesPage()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

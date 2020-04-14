@@ -1,10 +1,10 @@
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:http_logger/log_level.dart';
-import 'package:http_logger/logging_middleware.dart';
-import 'package:http_middleware/http_middleware.dart';
-import 'package:http_middleware/http_with_middleware.dart';
+//import 'package:http_logger/log_level.dart';
+//import 'package:http_logger/logging_middleware.dart';
+//import 'package:http_middleware/http_middleware.dart';
+//import 'package:http_middleware/http_with_middleware.dart';
 import 'package:troken/network/Responses.dart';
 
 import 'Requests.dart';
@@ -15,8 +15,8 @@ class TokenApi {
   static const String _baseUrl = "https://treetracker.org/api/token";
   static const String _testBaseUrl = "https://test.treetracker.org/api/token";
 
-  static const String API_KEY = "Bkmog4evxYxaEt6l9Odx1bWuZznMDhOX";
-//  static const String API_KEY = "0YUF85Z0kZOBhI9eVOsMteLb0YxVA2nt";
+//  static const String API_KEY = "Bkmog4evxYxaEt6l9Odx1bWuZznMDhOX";
+  static const String API_KEY = "JSoEtD0jMvREa1HzmwvVL4h1EFqKIrZE";
 
   String _userToken;
 
@@ -30,12 +30,23 @@ class TokenApi {
     _userToken = token;
   }
 
-  HttpWithMiddleware _httpClient = HttpWithMiddleware.build(middlewares: [
-    HttpLogger(logLevel: LogLevel.BODY),
-  ]);
+//  HttpWithMiddleware _httpClient = HttpWithMiddleware.build(middlewares: [
+//    HttpLogger(logLevel: LogLevel.BODY),
+//  ]);
 
   Future<AuthResponse> authenticate(AuthRequest authRequest) {
-    return _postObject("/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
+    var result;
+    print("AUTH!");
+    try {
+//      throw Exception("SUCKS!");
+      result = _postObject(
+          "/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
+    } catch (e) {
+      print("AUTH ERROR!!!");
+      print(e);
+    }
+    return result;
+    //return _postObject("/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
   }
 
   Future<AccountsResponse> accounts() {
@@ -54,7 +65,7 @@ class TokenApi {
     if (_userToken != null) {
       _headers.putIfAbsent("Authorization", () => "Bearer $_userToken");
     }
-    return await _httpClient.get("$_baseUrl$url", headers: _headers);
+    return await http.get("$_baseUrl$url", headers: _headers);
   }
 
   Future<T> _getObject<T>(String url, T Function(dynamic) converter) async {
@@ -67,7 +78,7 @@ class TokenApi {
     if (_userToken != null) {
       _headers.putIfAbsent("Authorization", () => "Bearer $_userToken");
     }
-    return await _httpClient.post("$_baseUrl$url", headers: _headers, body: body);
+    return await http.post("$_baseUrl$url", headers: _headers, body: body);
   }
 
   Future<T> _postObject<T>(String url, dynamic body, T Function(dynamic) converter) async {

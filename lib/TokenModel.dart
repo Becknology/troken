@@ -8,7 +8,8 @@ class TokenModel {
 
   TokenModel(this._api);
 
-  AccountResponse _currentAccountResponse;
+  List<AccountResponse> _accounts;
+  AccountResponse _currentAccount;
   TreeListResponse _currentTreeListResponse;
 
   Future<bool> login(String username, String password) {
@@ -29,15 +30,16 @@ class TokenModel {
     });
   }
 
-  Future<AccountResponse> loadAccount() {
-    if (_currentAccountResponse != null) {
-      return Future.value(_currentAccountResponse);
+  Future<List<AccountResponse>> loadAccounts() {
+    if (_accounts != null) {
+      print("ACCOUNT CACHE");
+      return Future.value(_accounts);
     }
+    print("ACCOUNT API");
     return _api.accounts()
-        .then((value) => value.accounts[0])
         .then((value) {
-          _currentAccountResponse = value;
-          return _currentAccountResponse;
+          _accounts = value.accounts;
+          return _accounts;
         });
   }
 
@@ -46,7 +48,7 @@ class TokenModel {
       return Future.value(_currentTreeListResponse);
     }
 
-    return _api.trees(_currentAccountResponse.wallet)
+    return _api.trees(_currentAccount.wallet)
         .then((value) {
       _currentTreeListResponse = value;
       return _currentTreeListResponse;
