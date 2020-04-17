@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:rxdart/rxdart.dart';
 import 'package:troken/model/Tree.dart';
 import 'package:troken/network/Requests.dart';
 import 'package:troken/network/Responses.dart';
@@ -9,9 +12,11 @@ class TokenModel {
 
   TokenModel(this._api);
 
-  List<AccountResponse> _accounts;
   AccountResponse _currentAccount;
   Map<String, List<Tree>> _currentTreeListResponseMap = new Map();
+
+  BehaviorSubject<List<AccountResponse>> accountStream = new BehaviorSubject();
+  Stream<List<AccountResponse>> get accounts => accountStream.stream;
 
   AccountResponse getSelectedAccount() {
     return _currentAccount;
@@ -39,20 +44,15 @@ class TokenModel {
     });
   }
 
-  Future<List<AccountResponse>> loadAccounts() {
-    if (_accounts != null) {
-      return Future.value(_accounts);
+  void loadAccounts({bool refresh = false}) {
+    if (refresh || accountStream.value == null) {
+      _api.accounts().then((response) => accountStream.add(response.accounts));
     }
-    return _api.accounts()
-        .then((value) {
-          _accounts = value.accounts;
-          return _accounts;
-        });
   }
 
   Future<List<AccountResponse>> getNonSelectedAccounts() {
-    if (_accounts != null && _currentAccount != null) {
-      return Future.value(_accounts.where((account) =>  account.wallet != _currentAccount.wallet).toList());
+    if (accountStream.value != null && _currentAccount != null) {
+      return Future.value(accountStream.value.where((account) => account.wallet != _currentAccount.wallet).toList());
     } else {
       return Future.error(Exception("No Accounts Loaded"));
     }
@@ -95,7 +95,11 @@ class TokenModel {
         .map((tree) => tree.token)
         .toList();
 
-    return await _api.transfer(TransferRequest(tokensToTransfer, _currentAccount.wallet, toWallet));
+    var response = await _api.transfer(TransferRequest(tokensToTransfer, _currentAccount.wallet, toWallet));
+
+    loadAccounts(refresh: true);
+
+    return response;
   }
 
 }

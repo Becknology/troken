@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:troken/AccountItem.dart';
@@ -20,12 +18,13 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<TokenModel>(context).loadAccounts();
     return Scaffold(
       appBar: AppBar(
         title: Text("Account"),
       ),
-      body: LCEFutureBuilder<List<AccountResponse>>(
-          future: Provider.of<TokenModel>(context).loadAccounts(),
+      body: LCEStreamBuilder<List<AccountResponse>>(
+          stream: Provider.of<TokenModel>(context).accountStream,
           builder: (context, snapshot) {
             return loadedState(context, snapshot.data);
           }
