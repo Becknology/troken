@@ -35,18 +35,7 @@ class TokenApi {
 //  ]);
 
   Future<AuthResponse> authenticate(AuthRequest authRequest) {
-    var result;
-    print("AUTH!");
-    try {
-//      throw Exception("SUCKS!");
-      result = _postObject(
-          "/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
-    } catch (e) {
-      print("AUTH ERROR!!!");
-      print(e);
-    }
-    return result;
-    //return _postObject("/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
+    return _postObject("/auth", authRequest.toJson(), (json) => AuthResponse.fromJson(json));
   }
 
   Future<AccountsResponse> accounts() {
@@ -59,6 +48,10 @@ class TokenApi {
 
   Future<TreeHistoryResponse> history(String treeToken) {
     return _getObject("/history?token=$treeToken", (json) => TreeHistoryResponse.fromJson(json));
+  }
+
+  Future<TransferResponse> transfer(TransferRequest transferRequest) {
+    return _postObject("/transfer", transferRequest, (json) => TransferResponse.fromJson(json));
   }
 
   Future<Response> _get(String url) async {

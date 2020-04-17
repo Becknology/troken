@@ -141,6 +141,23 @@ class TreeHistoryLogResponse {
 }
 
 @JsonSerializable()
+class TransferResponse {
+
+  @JsonKey(name: "status")
+  String status;
+  @JsonKey(name: "wallet_url")
+  String walletUrl;
+  @JsonKey(name: "errors")
+  List<ErrorResponse> errors;
+
+  TransferResponse(this.status, this.walletUrl, this.errors);
+
+  factory TransferResponse.fromJson(Map<String, dynamic> json) => _$TransferResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$TransferResponseToJson(this);
+
+}
+
+@JsonSerializable()
 class ErrorResponse {
 
   @JsonKey(name: "value")

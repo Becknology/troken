@@ -6,7 +6,7 @@ import 'package:troken/AccountItem.dart';
 import 'package:troken/TreesPage.dart';
 
 import 'LCEFutureBuilder.dart';
-import 'TokenModel.dart';
+import 'model/TokenModel.dart';
 import 'network/Responses.dart';
 
 class AccountPage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _AccountPageState extends State<AccountPage> {
 
   Widget loadedState(BuildContext context, List<AccountResponse> accounts) {
     return ListView.builder(
-      itemCount: accounts.length,
+      itemCount: accounts.length ,
       itemBuilder: (context, i) {
         return AccountItem(
           account: accounts[i],

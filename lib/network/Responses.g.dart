@@ -147,6 +147,25 @@ Map<String, dynamic> _$TreeHistoryLogResponseToJson(
       'processed_at': instance.processedAt,
     };
 
+TransferResponse _$TransferResponseFromJson(Map<String, dynamic> json) {
+  return TransferResponse(
+    json['status'] as String,
+    json['wallet_url'] as String,
+    (json['errors'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ErrorResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$TransferResponseToJson(TransferResponse instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'wallet_url': instance.walletUrl,
+      'errors': instance.errors,
+    };
+
 ErrorResponse _$ErrorResponseFromJson(Map<String, dynamic> json) {
   return ErrorResponse(
     json['value'] as String,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:troken/AccountPage.dart';
-import 'package:troken/TokenModel.dart';
+import 'package:troken/model/TokenModel.dart';
 import 'package:troken/main.dart';
 import 'package:troken/network/Requests.dart';
 import 'package:troken/network/TokenApi.dart';

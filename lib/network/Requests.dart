@@ -20,3 +20,20 @@ class AuthRequest {
   Map<String, dynamic> toJson() => _$AuthRequestToJson(this);
 
 }
+
+@JsonSerializable()
+class TransferRequest {
+
+  @JsonKey(name: "tokens")
+  List<String> tokens;
+  @JsonKey(name: "sender_wallet")
+  String senderWallet;
+  @JsonKey(name: "receiver_wallet")
+  String receiverWallet;
+
+  TransferRequest(this.tokens, this.senderWallet, this.receiverWallet);
+
+  factory TransferRequest.fromJson(Map<String, dynamic> json) => _$TransferRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$TransferRequestToJson(this);
+
+}

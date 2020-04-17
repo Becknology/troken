@@ -1,3 +1,4 @@
+import 'package:troken/model/Tree.dart';
 import 'package:troken/network/Requests.dart';
 import 'package:troken/network/Responses.dart';
 import 'package:troken/network/TokenApi.dart';
@@ -10,7 +11,7 @@ class TokenModel {
 
   List<AccountResponse> _accounts;
   AccountResponse _currentAccount;
-  Map<String, TreeListResponse> _currentTreeListResponseMap = new Map();
+  Map<String, List<Tree>> _currentTreeListResponseMap = new Map();
 
   AccountResponse getSelectedAccount() {
     return _currentAccount;
@@ -40,10 +41,8 @@ class TokenModel {
 
   Future<List<AccountResponse>> loadAccounts() {
     if (_accounts != null) {
-      print("ACCOUNT CACHE");
       return Future.value(_accounts);
     }
-    print("ACCOUNT API");
     return _api.accounts()
         .then((value) {
           _accounts = value.accounts;
@@ -51,12 +50,33 @@ class TokenModel {
         });
   }
 
-  Future<TreeListResponse> loadTrees() {
+  Future<List<AccountResponse>> getNonSelectedAccounts() {
+    if (_accounts != null && _currentAccount != null) {
+      return Future.value(_accounts.where((account) =>  account.wallet != _currentAccount.wallet).toList());
+    } else {
+      return Future.error(Exception("No Accounts Loaded"));
+    }
+  }
+
+  Future<List<Tree>> loadTrees() {
     if (_currentTreeListResponseMap.containsKey(_currentAccount.wallet)) {
       return Future.value(_currentTreeListResponseMap[_currentAccount.wallet]);
     }
 
     return _api.trees(_currentAccount.wallet)
+        .then((value) {
+          List<Tree> trees = new List();
+          for(var v in value.trees) {
+            trees.add(Tree(v.token,
+                           v.mapUrl,
+                           v.imageUrl,
+                           v.treeCaptureTime,
+                           v.latitude,
+                           v.longitude,
+                           v.region));
+          }
+          return trees;
+        })
         .then((value) {
       _currentTreeListResponseMap.putIfAbsent(_currentAccount.wallet, () => value);
       return _currentTreeListResponseMap[_currentAccount.wallet];
@@ -65,6 +85,17 @@ class TokenModel {
 
   Future<List<TreeHistoryLogResponse>> loadHistory(String treeToken) {
      return _api.history(treeToken).then((historyResponse) => historyResponse.logs);
+  }
+
+  Future<TransferResponse> transfer(String toWallet) async {
+    List<Tree> trees = await loadTrees();
+
+    List<String> tokensToTransfer = trees
+        .where((tree) => tree.isSelected)
+        .map((tree) => tree.token)
+        .toList();
+
+    return await _api.transfer(TransferRequest(tokensToTransfer, _currentAccount.wallet, toWallet));
   }
 
 }

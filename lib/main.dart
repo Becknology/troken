@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:troken/TokenModel.dart';
+import 'package:troken/model/TokenModel.dart';
 import 'package:troken/network/TokenApi.dart';
 
 import 'LoginPage.dart';
