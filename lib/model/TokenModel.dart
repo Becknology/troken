@@ -14,8 +14,8 @@ class TokenModel {
 
   AccountResponse _currentAccount;
 
-  BehaviorSubject<List<Tree>> treeStream = new BehaviorSubject();
-  Stream<List<Tree>> get trees => treeStream.stream;
+  BehaviorSubject<List<Tree>> _treeStream = new BehaviorSubject();
+  Stream<List<Tree>> get trees => _treeStream.stream;
 
   BehaviorSubject<List<AccountResponse>> accountStream = new BehaviorSubject();
   Stream<List<AccountResponse>> get accounts => accountStream.stream;
@@ -26,6 +26,19 @@ class TokenModel {
 
   void setSelectedAccount(AccountResponse account) {
     _currentAccount = account;
+  }
+
+  void selectTree(Tree tree) {
+    List<Tree> trees = _treeStream.value;
+
+    trees = trees.map((item) {
+      if (tree.token == item.token) {
+        tree.isSelected = !tree.isSelected;
+      }
+      return item;
+    }).toList();
+
+    _treeStream.add(trees);
   }
 
   Future<bool> login(String username, String password) {
@@ -66,7 +79,7 @@ class TokenModel {
             v.region));
       }
       return trees;
-    }).then((trees) => treeStream.add(trees));
+    }).then((trees) => _treeStream.add(trees));
   }
 
   Future<List<AccountResponse>> getNonSelectedAccounts() {
@@ -82,7 +95,7 @@ class TokenModel {
   }
 
   Future<TransferResponse> transfer(String toWallet) async {
-    List<Tree> trees = treeStream.value;
+    List<Tree> trees = _treeStream.value;
 
     List<String> tokensToTransfer = trees
         .where((tree) => tree.isSelected)

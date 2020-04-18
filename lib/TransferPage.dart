@@ -23,7 +23,7 @@ class _TransferPageState extends State<TransferPage> {
         title: Text("Transfer"),
       ),
       body: LCEStreamBuilder<List<Tree>>(
-          stream: Provider.of<TokenModel>(context).treeStream,
+          stream: Provider.of<TokenModel>(context).trees,
           builder: (context, snapshot) {
             var trees = snapshot.data;
             return ListView.builder(
@@ -35,58 +35,15 @@ class _TransferPageState extends State<TransferPage> {
                     imageUrl: trees[i].imageUrl,
                     isSelected: trees[i].isSelected,
                     onTap: () {
-                      setState(() {
-                        trees[i].isSelected = !trees[i].isSelected;
-                      });
+//                      setState(() {
+//                        trees[i].isSelected = !trees[i].isSelected;
+//                      });
                     },
                   );
                 }
             );
           }
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text("Select Destination Wallet"),
-                content: Container(
-                    height: 200,
-                    width: 100,
-                    child: FutureBuilder<List<AccountResponse>>(
-                        future: Provider.of<TokenModel>(context).getNonSelectedAccounts(),
-                        builder: (context, snapshot) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, i) {
-                              return ListTile(
-                                title: Text(snapshot.data[i].wallet),
-                                onTap: () async {
-                                  await Provider.of<TokenModel>(context).transfer(snapshot.data[i].wallet);
-                                  Navigator.of(context).pop();
-                                },
-                              );
-                            },
-                          );
-                        }
-                    )
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text("Cancel"),
-                    onPressed: () async {
-                      Navigator.of(context).pop();
-                    }
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        label: Text("Send")),
     );
   }
 
