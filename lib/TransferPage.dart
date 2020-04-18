@@ -22,8 +22,8 @@ class _TransferPageState extends State<TransferPage> {
       appBar: AppBar(
         title: Text("Transfer"),
       ),
-      body: LCEFutureBuilder<List<Tree>>(
-          future: Provider.of<TokenModel>(context).loadTrees(),
+      body: LCEStreamBuilder<List<Tree>>(
+          stream: Provider.of<TokenModel>(context).treeStream,
           builder: (context, snapshot) {
             var trees = snapshot.data;
             return ListView.builder(

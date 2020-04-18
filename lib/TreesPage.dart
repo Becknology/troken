@@ -19,12 +19,13 @@ class _TreesPageState extends State<TreesPage> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<TokenModel>(context).loadTrees();
     return Scaffold(
       appBar: AppBar(
         title: Text("Your Trees"),
       ),
-      body: LCEFutureBuilder<List<Tree>>(
-        future: Provider.of<TokenModel>(context).loadTrees(),
+      body: LCEStreamBuilder<List<Tree>>(
+        stream: Provider.of<TokenModel>(context).treeStream,
         builder: (context, snapshot) {
           var trees = snapshot.data;
           return ListView.builder(
