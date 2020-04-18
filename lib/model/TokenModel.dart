@@ -91,7 +91,7 @@ class TokenModel {
   }
 
   Future<List<TreeHistoryLogResponse>> loadHistory(String treeToken) {
-     return _api.history(treeToken).then((historyResponse) => historyResponse.logs);
+     return _api.history(treeToken).then((historyResponse) => historyResponse.logs.reversed.toList());
   }
 
   Future<TransferResponse> transfer(String toWallet) async {
