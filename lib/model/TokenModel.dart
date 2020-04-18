@@ -43,7 +43,6 @@ class TokenModel {
 
   Future<bool> login(String username, String password) {
     return _api.authenticate(AuthRequest(username, password))
-        .catchError((e) => false)
         .then((response) {
           if (response.errors == null) {
             _api.setUserToken(response.token);
@@ -55,6 +54,7 @@ class TokenModel {
           }
         }, onError: (e) {
           print("REAL ERROR");
+          print(e.toString());
           return false;
     });
   }

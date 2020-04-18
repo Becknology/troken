@@ -7,6 +7,7 @@ import 'package:troken/TransferPage.dart';
 import 'package:troken/TreeItem.dart';
 import 'package:troken/model/Tree.dart';
 import 'package:troken/network/Responses.dart';
+import 'package:troken/utils/DateFormats.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TreesPage extends StatefulWidget {
@@ -35,7 +36,7 @@ class _TreesPageState extends State<TreesPage> {
             itemBuilder: (context, i) {
               return TreeItem(
                 title: trees[i].region,
-                subtitle: trees[i].treeCaptureTime,
+                subtitle: formatter.format(DateTime.parse(trees[i].treeCaptureTime)),
                 imageUrl: trees[i].imageUrl,
                 isSelected: trees[i].isSelected,
                 onTap: () {

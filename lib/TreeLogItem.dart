@@ -1,7 +1,5 @@
-
-
-
 import 'package:flutter/material.dart';
+import 'package:troken/utils/DateFormats.dart';
 
 class TreeLogItem extends StatelessWidget {
 
@@ -15,7 +13,7 @@ class TreeLogItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text("$from -> $to"),
-      subtitle: Text(date),
+      subtitle: Text(formatter.format(DateTime.parse(date))),
     );
   }
 

@@ -58,7 +58,7 @@ class TokenApi {
     if (_userToken != null) {
       _headers.putIfAbsent("Authorization", () => "Bearer $_userToken");
     }
-    return await http.get("$_baseUrl$url", headers: _headers);
+    return await http.get(Uri.encodeFull("$_baseUrl$url"), headers: _headers);
   }
 
   Future<T> _getObject<T>(String url, T Function(dynamic) converter) async {
@@ -71,7 +71,7 @@ class TokenApi {
     if (_userToken != null) {
       _headers.putIfAbsent("Authorization", () => "Bearer $_userToken");
     }
-    return await http.post("$_baseUrl$url", headers: _headers, body: body);
+    return await http.post(Uri.encodeFull("$_baseUrl$url"), headers: _headers, body: body);
   }
 
   Future<T> _postObject<T>(String url, dynamic body, T Function(dynamic) converter) async {
